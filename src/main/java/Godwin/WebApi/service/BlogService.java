@@ -12,6 +12,10 @@ public class BlogService {
     @Autowired
     private List<Blog> blogPost = new ArrayList<>();
 
+    public List<Blog> getBlogPosts() {
+        return this.blogPost;
+    }
+
     public int findPostById(int id){
 
         for (Blog blog: this.blogPost) {
@@ -34,6 +38,24 @@ public class BlogService {
         }
         return blogBody;
     }
+
+    public Blog findByIdAndUpdate(int id, Blog blogBody){
+        Blog singleBlogPost = null;
+        for (Blog blog: this.blogPost) {
+            if (blog.getId() == id){
+                singleBlogPost = blog;
+                singleBlogPost.setId(id);
+                singleBlogPost.setCategories(blogBody.getCategories());
+                singleBlogPost.setTitle(blogBody.getTitle());
+                singleBlogPost.setCover(blog.getCover());
+                singleBlogPost.setContent(blog.getContent());
+                singleBlogPost.setReadingTime(blog.getReadingTime());
+            }
+        }
+        return singleBlogPost;
+    }
+
+
 
 
 
