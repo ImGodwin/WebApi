@@ -8,21 +8,35 @@ public class BlogService {
 
     private final List<Blog> blogPost = new ArrayList<>();
 
+    public List<Blog> getBlogPost(){
+        return this.blogPost;
+    }
+
+    public int findPostById(int id){
+
+        for (Blog blog: this.blogPost) {
+            if (blog.getId() == id){
+                return id;
+            }else {
+                System.err.println("not found");
+            }
+        }
+        return id;
+    }
     public Blog savePost(Blog blogBody){
-        Blog toSave = blogBody;
         try {
             Random randomNum = new Random();
             blogBody.setId(randomNum.nextInt(1, 20));
             this.blogPost.add(blogBody);
-            return toSave;
+            return blogBody;
         }catch (Exception ex){
             System.out.println("Not saved");
         }
-        return  toSave;
+        return blogBody;
     }
 
-    public Blog findPostById(int id){
-        Blog
-    }
+
+
+
 
 }
