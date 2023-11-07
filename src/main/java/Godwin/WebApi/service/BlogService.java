@@ -39,20 +39,43 @@ public class BlogService {
         return blogBody;
     }
 
-    public Blog findByIdAndUpdate(int id, Blog blogBody){
+    public Blog findByIdAndUpdate(int id, Blog blogBody) {
+
         Blog singleBlogPost = null;
-        for (Blog blog: this.blogPost) {
-            if (blog.getId() == id){
-                singleBlogPost = blog;
-                singleBlogPost.setId(id);
-                singleBlogPost.setCategories(blogBody.getCategories());
-                singleBlogPost.setTitle(blogBody.getTitle());
-                singleBlogPost.setCover(blog.getCover());
-                singleBlogPost.setContent(blog.getContent());
-                singleBlogPost.setReadingTime(blog.getReadingTime());
+        try {
+            singleBlogPost = null;
+            for (Blog blog : this.blogPost) {
+                if (blog.getId() == id) {
+                    singleBlogPost = blog;
+                    singleBlogPost.setId(id);
+                    singleBlogPost.setCategories(blogBody.getCategories());
+                    singleBlogPost.setTitle(blogBody.getTitle());
+                    singleBlogPost.setCover(blog.getCover());
+                    singleBlogPost.setContent(blog.getContent());
+                    singleBlogPost.setReadingTime(blog.getReadingTime());
+                }
             }
+        } catch (Exception ex) {
+            System.err.println("not updated");
         }
         return singleBlogPost;
+    }
+
+    public void findByBlogpostByIdAndDelete(int id){
+
+        try {
+            ListIterator<Blog> iterateBlogPosts = this.blogPost.listIterator();
+
+            while (iterateBlogPosts.hasNext()){
+                Blog currentPosition = iterateBlogPosts.next();
+                if (currentPosition.getId() == id){
+                    iterateBlogPosts.remove();
+                }
+            }
+        }catch (Exception ex){
+            System.err.println("Blogpost not deleted");
+        }
+
     }
 
 
