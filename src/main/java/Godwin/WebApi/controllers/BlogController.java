@@ -1,8 +1,8 @@
 package Godwin.WebApi.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import entities.Blog;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -10,7 +10,31 @@ import java.util.Set;
 @RequestMapping("/blogposts")
 public class BlogController {
 
-    /*@GetMapping("")
-    public Set<>*/
+    @GetMapping("")
+    public Set<Blog> getBlog(){
+        return null;
+    }
+
+    @GetMapping("/{id}")
+    public Blog findById(@PathVariable int id){
+        return null;
+    }
+
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Blog saveBlogPost(@RequestBody Blog body){
+        return null;
+    }
+
+    @PutMapping("/{id}")
+    public Blog findByIdAndUpdate(@PathVariable int id, @RequestBody Blog body){
+        return null;
+    }
+
+    /*@DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable int id){
+        return null;
+    }*/
 
 }
