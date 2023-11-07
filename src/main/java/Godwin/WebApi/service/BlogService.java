@@ -1,16 +1,16 @@
 package Godwin.WebApi.service;
 
 import entities.Blog;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
+@Getter
 public class BlogService {
 
-    private final List<Blog> blogPost = new ArrayList<>();
-
-    public List<Blog> getBlogPost(){
-        return this.blogPost;
-    }
+    @Autowired
+    private List<Blog> blogPost = new ArrayList<>();
 
     public int findPostById(int id){
 
@@ -34,6 +34,7 @@ public class BlogService {
         }
         return blogBody;
     }
+
 
 
 

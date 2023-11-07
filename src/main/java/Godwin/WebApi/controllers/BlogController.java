@@ -12,8 +12,8 @@ import java.util.Set;
 @RequestMapping("/blogposts")
 public class BlogController {
 
-    @Autowired
-    private BlogService blogService;
+
+    //private BlogService blogService;
 
     @GetMapping("")
     public Set<Blog> getBlog(){
