@@ -3,13 +3,15 @@ package Godwin.WebApi.service;
 import entities.Blog;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Getter
+
+@Service
 public class BlogService {
 
-    private List<Blog> blogPost = new ArrayList<>();
+    private final List<Blog> blogPost = new ArrayList<>();
 
     public List<Blog> getBlogPosts() {
         return this.blogPost;
@@ -42,7 +44,6 @@ public class BlogService {
 
         Blog singleBlogPost = null;
         try {
-            singleBlogPost = null;
             for (Blog blog : this.blogPost) {
                 if (blog.getId() == id) {
                     singleBlogPost = blog;
@@ -57,6 +58,7 @@ public class BlogService {
         } catch (Exception ex) {
             System.err.println("not updated");
         }
+
         return singleBlogPost;
     }
 
