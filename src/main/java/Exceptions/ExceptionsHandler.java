@@ -23,7 +23,8 @@ public class ExceptionsHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorsPayload GenericErrorHandlerMethod(Exception e){
-        return new ErrorsPayload(e.getMessage(), new Date());
+        e.printStackTrace(); //this prunts out the error position
+        return new ErrorsPayload("Server error, in maintenance", new Date());
     }
 
 

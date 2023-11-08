@@ -2,7 +2,9 @@ package Godwin.WebApi.service;
 
 import entities.Author;
 import entities.Blog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repositories.AuthorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,9 @@ import java.util.Random;
 @Service
 public class AuthorService {
 
-    private List<Author> author = new ArrayList<>();
+    @Autowired
+    private AuthorRepository authorRepository;
+    //private List<Author> author = new ArrayList<>();
 
     public List<Author> getAuthors() {
         return this.author;
@@ -29,7 +33,9 @@ public class AuthorService {
      }
 
     public Author saveAuthor(Author body){
-        try {
+
+
+      /*  try {
             Random randomNum = new Random();
             body.setId(randomNum.nextInt(1, 20));
             this.author.add(body);
@@ -37,7 +43,7 @@ public class AuthorService {
         }catch (Exception ex){
             System.out.println("Not saved");
         }
-        return body;
+        return body;*/
     }
 
     public Author findAuthorByIdAndUpdate(int id, Author author) {
