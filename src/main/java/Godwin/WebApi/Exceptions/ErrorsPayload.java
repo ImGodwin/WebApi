@@ -1,4 +1,4 @@
-package Exceptions;
+package Godwin.WebApi.Exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

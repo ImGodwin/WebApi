@@ -1,4 +1,4 @@
-package Exceptions;
+package Godwin.WebApi.Exceptions;
 
 public class NotFoundException extends RuntimeException{
 

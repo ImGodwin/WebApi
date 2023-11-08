@@ -1,14 +1,11 @@
 package Godwin.WebApi.controllers;
 
 import Godwin.WebApi.service.AuthorService;
-import entities.Author;
+import Godwin.WebApi.entities.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/authors")

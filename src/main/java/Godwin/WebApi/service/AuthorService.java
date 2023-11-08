@@ -1,15 +1,15 @@
 package Godwin.WebApi.service;
 
-import Exceptions.BadRequestException;
-import Exceptions.NotFoundException;
-import entities.Author;
+import Godwin.WebApi.Exceptions.BadRequestException;
+import Godwin.WebApi.Exceptions.NotFoundException;
+import Godwin.WebApi.entities.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import repositories.AuthorRepository;
+import Godwin.WebApi.repositories.AuthorRepository;
 
 
 @Service
@@ -31,7 +31,7 @@ public class AuthorService {
     public Author saveAuthor(Author body){
 
         authorRepository.findByEmail(body.getEmail()).ifPresent(author1 -> {
-            throw new BadRequestException("The email " + author1.getEmail() + " can no longer be added")
+            throw new BadRequestException("The email " + author1.getEmail() + " can no longer be added");
         });
 
         body.setAvatar("http://ui-avatars.com/api/?name=" + body.getName() +

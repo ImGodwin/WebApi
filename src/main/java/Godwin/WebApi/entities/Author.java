@@ -1,13 +1,11 @@
-package entities;
+package Godwin.WebApi.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +13,11 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
+@Table(name = "author")
 public class Author {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String surname;
@@ -26,7 +27,7 @@ public class Author {
     @CreationTimestamp
     private Date createdAt;
 
-    @OneToMany(mappedBy = "Author")
+    @OneToMany(mappedBy = "author")
     private List<Blog> blogList;
 
 }

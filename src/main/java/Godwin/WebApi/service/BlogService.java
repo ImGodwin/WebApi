@@ -1,75 +1,56 @@
 package Godwin.WebApi.service;
 
-import entities.Blog;
-import lombok.Getter;
+import Godwin.WebApi.Exceptions.BadRequestException;
+import Godwin.WebApi.Exceptions.NotFoundException;
+import Godwin.WebApi.entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import Godwin.WebApi.repositories.BlogRepository;
 
 
 @Service
 public class BlogService {
 
-    private final List<Blog> blogPost = new ArrayList<>();
+    @Autowired
+    private BlogRepository blogRepository;
 
-    public List<Blog> getBlogPosts() {
-        return this.blogPost;
+    public Page<Blog> getBlogs(int page, int size, String orderBy){
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
+        return blogRepository.findAll(pageable);
     }
 
-    public Blog findPostById(int id){
-
-        for (Blog blog: this.blogPost) {
-            if (blog.getId() == id){
-                return blog;
-            }
-        }
-        throw new RuntimeException("not found");
-    }
-    public Blog savePost(Blog blogBody){
-        try {
-            Random randomNum = new Random();
-            blogBody.setId(randomNum.nextInt(1, 20));
-            this.blogPost.add(blogBody);
-            return blogBody;
-        }catch (Exception ex){
-            System.out.println("Not saved");
-        }
-        return blogBody;
+    public Blog findById(int id) throws NotFoundException {
+        return blogRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Blog findByIdAndUpdate(int id, Blog blogBody) {
+    public Blog saveBlog(Blog body){
 
-        Blog singleBlogPost = null;
+        blogRepository.findByTitle(body.getTitle()).ifPresent(blog1 -> {
+            throw new BadRequestException("The blogpost " + blog1.getTitle() + " can no longer be added");
+        });
 
-        for (Blog blog : this.blogPost) {
-            if (blog.getId() == id) {
-                singleBlogPost = blog;
-                singleBlogPost.setId(id);
-                singleBlogPost.setCategories(blogBody.getCategories());
-                singleBlogPost.setTitle(blogBody.getTitle());
-                singleBlogPost.setCover(blogBody.getCover());
-                singleBlogPost.setContent(blogBody.getContent());
-                singleBlogPost.setReadingTime(blogBody.getReadingTime());
-                return singleBlogPost;
-            }
-        }
-        throw new RuntimeException("not found");
+        body.setCover("https://picsum.photos/200/300" + body.getTitle() +
+                "and" + body.getContent());
+
+        return blogRepository.save(body);
     }
 
-    public void findByBlogpostByIdAndDelete(int id){
+    public Blog findBlogByIdAndUpdate(int id, Blog body){
+        Blog foundBlog = this.findById(id);
 
-        try {
-            ListIterator<Blog> iterateBlogPosts = this.blogPost.listIterator();
+        foundBlog.setCategories(body.getCategories());
+        foundBlog.setTitle(body.getTitle());
+        foundBlog.setContent(body.getContent());
+        return blogRepository.save(foundBlog);
+    }
 
-            while (iterateBlogPosts.hasNext()){
-                Blog currentPosition = iterateBlogPosts.next();
-                if (currentPosition.getId() == id){
-                    iterateBlogPosts.remove();
-                }
-            }
-        }catch (Exception ex){
-            System.err.println("Blogpost not deleted");
-        }
+    public void findBlogByIdAndDelete(int id) throws NotFoundException {
+        Blog foundBlog = this.findById(id);
+        blogRepository.delete(foundBlog);
     }
 }
