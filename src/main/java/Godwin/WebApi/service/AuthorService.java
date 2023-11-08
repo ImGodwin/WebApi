@@ -12,33 +12,32 @@ import java.util.Random;
 @Service
 public class AuthorService {
 
-    private final List<Author> author = new ArrayList<>();
+    private List<Author> author = new ArrayList<>();
 
-    public List<Author> getBlogPosts() {
+    public List<Author> getAuthors() {
         return this.author;
     }
 
-    public int findPostById(int id){
+    public Author findAuthorById(int id){
 
          for (Author author1: this.author) {
              if (author1.getId() == id){
-                 return author1.getId();
-             }else {
-                 System.err.println("not found");
+                 return author1;
              }
          }
-         return id;
+         throw new RuntimeException("not found");
      }
-    public Author savePost(Author authorPost){
+
+    public Author saveAuthor(Author body){
         try {
             Random randomNum = new Random();
-            authorPost.setId(randomNum.nextInt(1, 20));
-            this.author.add(authorPost);
-            return authorPost;
+            body.setId(randomNum.nextInt(1, 20));
+            this.author.add(body);
+            return body;
         }catch (Exception ex){
             System.out.println("Not saved");
         }
-        return authorPost;
+        return body;
     }
 
     public Author findAuthorByIdAndUpdate(int id, Author author) {

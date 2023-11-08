@@ -1,5 +1,6 @@
 package Godwin.WebApi.controllers;
 
+import Godwin.WebApi.service.AuthorService;
 import entities.Author;
 import entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,33 +15,33 @@ import java.util.Set;
 public class AuthorController {
 
     @Autowired
-
+    private AuthorService authorService;
 
     @GetMapping("")
     public List<Author> getAuthor(){
-        return null;
+        return authorService.getAuthors();
     }
 
     @GetMapping("/{id}")
-    public Author findById(@PathVariable int id){
-        return null;
-    }
+  /*  public Author findById(@PathVariable int id){
+        return authorService.findAuthorById(id);
+    }*/
 
-    @PostMapping("")
+    @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
     public Author saveAuthorPost(@RequestBody Author body){
-        return null;
+        return authorService.saveAuthor(body);
     }
 
     @PutMapping("/{id}")
     public Author findByIdAndUpdate(@PathVariable int id, @RequestBody Author body){
-        return null;
+        return authorService.findAuthorByIdAndUpdate(id, body);
     }
 
-    /*@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable int id){
-        return null;
-    }*/
+        authorService.findAuthorByByIdAndDelete(id);
+    }
 
 }

@@ -17,17 +17,15 @@ public class BlogService {
         return this.blogPost;
     }
 
-   /* public int findPostById(int id){
+    public Blog findPostById(int id){
 
         for (Blog blog: this.blogPost) {
             if (blog.getId() == id){
-                return blog.getId();
-            }else {
-                System.err.println("not found");
+                return blog;
             }
         }
-        return id;
-    }*/
+        throw new RuntimeException("not found");
+    }
     public Blog savePost(Blog blogBody){
         try {
             Random randomNum = new Random();
@@ -43,23 +41,20 @@ public class BlogService {
     public Blog findByIdAndUpdate(int id, Blog blogBody) {
 
         Blog singleBlogPost = null;
-        try {
-            for (Blog blog : this.blogPost) {
-                if (blog.getId() == id) {
-                    singleBlogPost = blog;
-                    singleBlogPost.setId(id);
-                    singleBlogPost.setCategories(blogBody.getCategories());
-                    singleBlogPost.setTitle(blogBody.getTitle());
-                    singleBlogPost.setCover(blog.getCover());
-                    singleBlogPost.setContent(blog.getContent());
-                    singleBlogPost.setReadingTime(blog.getReadingTime());
-                }
-            }
-        } catch (Exception ex) {
-            System.err.println("not updated");
-        }
 
-        return singleBlogPost;
+        for (Blog blog : this.blogPost) {
+            if (blog.getId() == id) {
+                singleBlogPost = blog;
+                singleBlogPost.setId(id);
+                singleBlogPost.setCategories(blogBody.getCategories());
+                singleBlogPost.setTitle(blogBody.getTitle());
+                singleBlogPost.setCover(blogBody.getCover());
+                singleBlogPost.setContent(blogBody.getContent());
+                singleBlogPost.setReadingTime(blogBody.getReadingTime());
+                return singleBlogPost;
+            }
+        }
+        throw new RuntimeException("not found");
     }
 
     public void findByBlogpostByIdAndDelete(int id){
@@ -76,14 +71,5 @@ public class BlogService {
         }catch (Exception ex){
             System.err.println("Blogpost not deleted");
         }
-
     }
-
-
-
-
-
-
-
-
 }

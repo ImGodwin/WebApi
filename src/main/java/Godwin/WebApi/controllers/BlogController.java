@@ -21,10 +21,10 @@ public class BlogController {
         return blogService.getBlogPosts();
     }
 
-    /*@GetMapping("/{id}")
+    @GetMapping("/{id}")
     public Blog findById(@PathVariable int id){
         return blogService.findPostById(id);
-    }*/
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
