@@ -43,7 +43,7 @@ public class AuthorService {
     public Author findAuthorByIdAndUpdate(int id, Author author) {
 
         Author singleAuthor = null;
-        try {
+
             for (Author author1 : this.author) {
                 if (author1.getId() == id) {
                     singleAuthor = author1;
@@ -53,13 +53,10 @@ public class AuthorService {
                     singleAuthor.setEmail(author.getEmail());
                     singleAuthor.setDateOfBirth(author.getDateOfBirth());
                     singleAuthor.setAvatar(author.getAvatar());
+                    return singleAuthor;
                 }
             }
-        } catch (Exception ex) {
-            System.err.println("not updated");
-        }
-
-        return singleAuthor;
+        throw new RuntimeException("not found");
     }
 
     public void findAuthorByByIdAndDelete(int id){
