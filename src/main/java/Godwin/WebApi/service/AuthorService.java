@@ -1,8 +1,14 @@
 package Godwin.WebApi.service;
 
+import Exceptions.BadRequestException;
+import Exceptions.NotFoundException;
 import entities.Author;
 import entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import repositories.AuthorRepository;
 
@@ -16,70 +22,41 @@ public class AuthorService {
 
     @Autowired
     private AuthorRepository authorRepository;
-    //private List<Author> author = new ArrayList<>();
 
-    public List<Author> getAuthors() {
-        return this.author;
+    public Page<Author> getAuthors(int page, int size, String orderBy){
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
+        return authorRepository.findAll(pageable);
     }
 
-    public Author findAuthorById(int id){
-
-         for (Author author1: this.author) {
-             if (author1.getId() == id){
-                 return author1;
-             }
-         }
-         throw new RuntimeException("not found");
-     }
+    public Author findById(int id) throws NotFoundException{
+        return authorRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
 
     public Author saveAuthor(Author body){
 
+        authorRepository.findByEmail(body.getEmail()).ifPresent(author1 -> {
+            throw new BadRequestException("The email " + author1.getEmail() + " can no longer be added")
+        });
 
-      /*  try {
-            Random randomNum = new Random();
-            body.setId(randomNum.nextInt(1, 20));
-            this.author.add(body);
-            return body;
-        }catch (Exception ex){
-            System.out.println("Not saved");
-        }
-        return body;*/
+        body.setAvatar("http://ui-avatars.com/api/?name=" + body.getName() +
+                "and" + body.getSurname());
+
+        return authorRepository.save(body);
     }
 
-    public Author findAuthorByIdAndUpdate(int id, Author author) {
-
-        Author singleAuthor = null;
-
-            for (Author author1 : this.author) {
-                if (author1.getId() == id) {
-                    singleAuthor = author1;
-                    singleAuthor.setId(id);
-                    singleAuthor.setName(author.getName());
-                    singleAuthor.setSurname(author.getSurname());
-                    singleAuthor.setEmail(author.getEmail());
-                    singleAuthor.setDateOfBirth(author.getDateOfBirth());
-                    singleAuthor.setAvatar(author.getAvatar());
-                    return singleAuthor;
-                }
-            }
-        throw new RuntimeException("not found");
+    public void findAuthorByIdAndDelete(int id) throws NotFoundException {
+        Author foundAuthor = this.findById(id);
+        authorRepository.delete(foundAuthor);
     }
 
-    public void findAuthorByByIdAndDelete(int id){
+    public Author findByIdAndUpdate(int id, Author body){
+        Author foundAuthor = this.findById(id);
 
-        try {
-            ListIterator<Author> iterateAuthorList = this.author.listIterator();
-
-            while (iterateAuthorList.hasNext()){
-                Author currentPosition = iterateAuthorList.next();
-                if (currentPosition.getId() == id){
-                    iterateAuthorList.remove();
-                }
-            }
-        }catch (Exception ex){
-            System.err.println("Blogpost not deleted");
-        }
-
+        foundAuthor.setName(body.getName());
+        foundAuthor.setSurname(body.getSurname());
+        foundAuthor.setEmail(body.getEmail());
+        return authorRepository.save(foundAuthor);
     }
 
 }
