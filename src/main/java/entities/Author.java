@@ -5,7 +5,10 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -20,6 +23,8 @@ public class Author {
     private String email;
     private String dateOfBirth;
     private String avatar;
+    @CreationTimestamp
+    private Date createdAt;
 
     @OneToMany(mappedBy = "Author")
     private List<Blog> blogList;

@@ -3,7 +3,6 @@ package Godwin.WebApi.service;
 import Exceptions.BadRequestException;
 import Exceptions.NotFoundException;
 import entities.Author;
-import entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,10 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import repositories.AuthorRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
 
 @Service
 public class AuthorService {
@@ -45,12 +40,7 @@ public class AuthorService {
         return authorRepository.save(body);
     }
 
-    public void findAuthorByIdAndDelete(int id) throws NotFoundException {
-        Author foundAuthor = this.findById(id);
-        authorRepository.delete(foundAuthor);
-    }
-
-    public Author findByIdAndUpdate(int id, Author body){
+    public Author findAuthorByIdAndUpdate(int id, Author body){
         Author foundAuthor = this.findById(id);
 
         foundAuthor.setName(body.getName());
@@ -59,4 +49,8 @@ public class AuthorService {
         return authorRepository.save(foundAuthor);
     }
 
+    public void findAuthorByIdAndDelete(int id) throws NotFoundException {
+        Author foundAuthor = this.findById(id);
+        authorRepository.delete(foundAuthor);
+    }
 }

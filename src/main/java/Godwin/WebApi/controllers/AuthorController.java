@@ -2,8 +2,8 @@ package Godwin.WebApi.controllers;
 
 import Godwin.WebApi.service.AuthorService;
 import entities.Author;
-import entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +18,15 @@ public class AuthorController {
     private AuthorService authorService;
 
     @GetMapping("")
-    public List<Author> getAuthor(){
-        return authorService.getAuthors();
+    public Page<Author> getAuthors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size,
+                                   @RequestParam(defaultValue = "id") String orderBy){
+        return authorService.getAuthors(page, size, orderBy);
     }
 
-    @GetMapping("/{id}")
-  /*  public Author findById(@PathVariable int id){
-        return authorService.findAuthorById(id);
-    }*/
+    @GetMapping(value = "/{id}")
+    public Author findById(@PathVariable int id){
+        return authorService.findById(id);
+    }
 
     @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,7 +42,7 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable int id){
-        authorService.findAuthorByByIdAndDelete(id);
+        authorService.findAuthorByIdAndDelete(id);
     }
 
 }
