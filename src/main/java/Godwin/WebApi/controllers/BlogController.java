@@ -1,5 +1,6 @@
 package Godwin.WebApi.controllers;
 
+import Godwin.WebApi.entities.NewPost;
 import Godwin.WebApi.service.BlogService;
 import Godwin.WebApi.entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,10 @@ public class BlogController {
         return blogService.findById(id);
     }
 
-    @PostMapping("/post")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Blog saveBlogPost(@RequestBody Blog body){
-        return blogService.saveBlog(body);
+    public Blog saveBlogPost(@RequestBody NewPost newPost){
+        return blogService.saveBlog(newPost);
     }
 
     @PutMapping("/{id}")

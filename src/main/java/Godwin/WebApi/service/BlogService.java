@@ -3,6 +3,8 @@ package Godwin.WebApi.service;
 import Godwin.WebApi.Exceptions.BadRequestException;
 import Godwin.WebApi.Exceptions.NotFoundException;
 import Godwin.WebApi.entities.Blog;
+import Godwin.WebApi.entities.NewPost;
+import Godwin.WebApi.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,9 @@ public class BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
+    @Autowired
+    private AuthorService authorService;
+
     public Page<Blog> getBlogs(int page, int size, String orderBy){
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
@@ -28,16 +33,17 @@ public class BlogService {
         return blogRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Blog saveBlog(Blog body){
+    public Blog saveBlog(NewPost newPost){
 
-        blogRepository.findByTitle(body.getTitle()).ifPresent(blog1 -> {
-            throw new BadRequestException("The blogpost " + blog1.getTitle() + " can no longer be added");
-        });
+        Blog newBlogPost = new Blog();
+        newBlogPost.setCategories(newPost.getCategories());
+        newBlogPost.setContent(newPost.getContent());
+        newBlogPost.setTitle(newPost.getTitle());
+        newBlogPost.setAuthor(authorService.findById(newPost.getAuthor_id()));
+        newBlogPost.setCover("https://picsum.photos/200/300");
 
-        body.setCover("https://picsum.photos/200/300" + body.getTitle() +
-                "and" + body.getContent());
 
-        return blogRepository.save(body);
+        return blogRepository.save(newBlogPost);
     }
 
     public Blog findBlogByIdAndUpdate(int id, Blog body){

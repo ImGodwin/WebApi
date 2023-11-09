@@ -25,7 +25,7 @@ public class AuthorController {
         return authorService.findById(id);
     }
 
-    @PostMapping("/post")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Author saveAuthorPost(@RequestBody Author body){
         return authorService.saveAuthor(body);
