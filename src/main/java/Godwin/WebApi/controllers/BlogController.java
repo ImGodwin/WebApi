@@ -59,8 +59,8 @@ public class BlogController {
 
     @PostMapping("/uploadPhoto")
     public String uploadExample(@RequestParam("avatar") MultipartFile body) throws IOException {
-        System.out.println("upload size" + body.getSize());
-        System.out.println("Upload content type" + body.getContentType());
+        System.out.println(body.getSize());
+        System.out.println(body.getContentType());
         return blogService.uploadPicture(body);
     }
 }
