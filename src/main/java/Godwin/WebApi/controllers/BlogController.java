@@ -1,5 +1,6 @@
 package Godwin.WebApi.controllers;
 
+import Godwin.WebApi.Exceptions.BadRequestException;
 import Godwin.WebApi.entities.NewPost;
 import Godwin.WebApi.payloadPackage.NewblogPostDTO;
 import Godwin.WebApi.service.BlogService;
@@ -7,7 +8,11 @@ import Godwin.WebApi.entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/blogposts")
@@ -30,8 +35,14 @@ public class BlogController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Blog saveBlogPost(@RequestBody NewblogPostDTO newPost){
-        return blogService.saveBlog(newPost);
+    public Blog saveBlogPost(@RequestBody @Validated NewblogPostDTO newPost, BindingResult validation){
+
+        if (validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }else {
+            return blogService.saveBlog(newPost);
+        }
+
     }
 
     @PutMapping("/{id}")
