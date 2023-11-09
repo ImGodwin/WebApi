@@ -2,8 +2,10 @@ package Godwin.WebApi.service;
 
 import Godwin.WebApi.Exceptions.BadRequestException;
 import Godwin.WebApi.Exceptions.NotFoundException;
+import Godwin.WebApi.entities.Author;
 import Godwin.WebApi.entities.Blog;
 import Godwin.WebApi.entities.NewPost;
+import Godwin.WebApi.payloadPackage.NewblogPostDTO;
 import Godwin.WebApi.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,16 +35,19 @@ public class BlogService {
         return blogRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Blog saveBlog(NewPost newPost){
+    public Blog saveBlog(NewblogPostDTO newPost){
 
+        //confirm if Title exists already
+        blogRepository.findByTitle(newPost.title()).ifPresent(post -> {throw new
+                BadRequestException("The title " + post.getTitle() + " added is already is use");
+        });
         Blog newBlogPost = new Blog();
-        newBlogPost.setCategories(newPost.getCategories());
-        newBlogPost.setContent(newPost.getContent());
-        newBlogPost.setTitle(newPost.getTitle());
-        newBlogPost.setAuthor(authorService.findById(newPost.getAuthor_id()));
+        newBlogPost.setCategories(newPost.categories());
+        newBlogPost.setTitle(newPost.title());
         newBlogPost.setCover("https://picsum.photos/200/300");
-
-
+        newBlogPost.setContent(newPost.content());
+        newBlogPost.setReadingTime(newPost.readingTime());
+        newBlogPost.setAuthor(authorService.findById(newPost.author_id()));
         return blogRepository.save(newBlogPost);
     }
 

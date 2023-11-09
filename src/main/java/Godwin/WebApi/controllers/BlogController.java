@@ -1,6 +1,7 @@
 package Godwin.WebApi.controllers;
 
 import Godwin.WebApi.entities.NewPost;
+import Godwin.WebApi.payloadPackage.NewblogPostDTO;
 import Godwin.WebApi.service.BlogService;
 import Godwin.WebApi.entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BlogController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Blog saveBlogPost(@RequestBody NewPost newPost){
+    public Blog saveBlogPost(@RequestBody NewblogPostDTO newPost){
         return blogService.saveBlog(newPost);
     }
 
