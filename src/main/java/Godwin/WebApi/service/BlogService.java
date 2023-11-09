@@ -7,6 +7,8 @@ import Godwin.WebApi.entities.Blog;
 import Godwin.WebApi.entities.NewPost;
 import Godwin.WebApi.payloadPackage.NewblogPostDTO;
 import Godwin.WebApi.repositories.AuthorRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import Godwin.WebApi.repositories.BlogRepository;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Service
@@ -24,6 +29,9 @@ public class BlogService {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     public Page<Blog> getBlogs(int page, int size, String orderBy){
 
@@ -63,5 +71,9 @@ public class BlogService {
     public void findBlogByIdAndDelete(int id) throws NotFoundException {
         Blog foundBlog = this.findById(id);
         blogRepository.delete(foundBlog);
+    }
+
+    public String uploadPicture(MultipartFile file) throws IOException {
+        return (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
     }
 }
